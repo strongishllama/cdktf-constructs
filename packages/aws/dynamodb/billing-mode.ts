@@ -1,0 +1,4 @@
+export enum BillingMode {
+  PAY_PER_REQUEST = "PAY_PER_REQUEST",
+  PROVISIONED = "PROVISIONED",
+}
