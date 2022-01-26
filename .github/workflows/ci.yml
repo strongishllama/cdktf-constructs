@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     name: Test
-    uses: strongishllama/github-actions/npm/test.yml@main
+    uses: strongishllama/github-actions/.github/workflows/npm-test.yml@main
   build:
     name: Build
-    uses: strongishllama/github-actions/npm/build.yml@main
+    uses: strongishllama/github-actions/.github/workflows/npm-build.yml@main
