@@ -1,0 +1,15 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Test
+    uses: strongishllama/github-actions/npm/test.yml@main
+  build:
+    name: Build
+    uses: strongishllama/github-actions/npm/build.yml@main
