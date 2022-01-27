@@ -2,12 +2,13 @@ import { Construct } from "constructs";
 import { dynamodb } from "@cdktf/provider-aws";
 import { BillingMode } from "./billing-mode";
 import { AttributeType } from "./attribute-type";
+import * as rand from "../../../lib/rand";
 
 export interface TableConfig {
   /**
-   * The name of the table, this needs to be unique within a region.
+   * The name of the table, this needs to be unique within a region. If left undefined one will be generated.
    */
-  readonly name: string;
+  readonly name?: string;
   /**
    * Controls how you are charged for read and write throughput and how you manage capacity.
    *
@@ -41,15 +42,13 @@ export interface TableConfig {
  * that adhere to single table design patterns.
  */
 export class Table extends Construct {
-  public readonly table: dynamodb.DynamodbTable;
-
-  constructor(scope: Construct, name: string, config: TableConfig) {
+  constructor(scope: Construct, name: string, config: TableConfig = {}) {
     super(scope, name);
 
-    this.table = new dynamodb.DynamodbTable(scope, `${name}-resource`, {
+    new dynamodb.DynamodbTable(scope, `${name}-resource`, {
       billingMode: config.billingMode ?? BillingMode.PAY_PER_REQUEST,
       hashKey: config.hashKey ?? "hash_key",
-      name: config.name,
+      name: config.name ?? `${name}-${rand.suffix()}`,
       rangeKey: config.rangeKey ?? "range_key",
       readCapacity: config.readCapacity,
       writeCapacity: config.writeCapacity,

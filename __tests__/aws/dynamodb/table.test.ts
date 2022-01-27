@@ -5,17 +5,10 @@ import * as dynamodb from "../../../packages/aws/dynamodb";
 import { Stack, StackConfig } from "../../../packages/aws/stack";
 
 describe("Test DynamoDB Table", () => {
-  const tableConfig: dynamodb.TableConfig = {
-    name: "test-table",
-  };
-  const stackConfig: StackConfig = {
-    region: "ap-southeast-2",
-  };
-
   it("should contain a dynamodb.DynamodbTable", () => {
     expect(
       Testing.synthScope((scope) => {
-        new dynamodb.Table(scope, "table", tableConfig);
+        new dynamodb.Table(scope, "table");
       })
     ).toHaveResource(aws.dynamodb.DynamodbTable);
   });
@@ -23,7 +16,7 @@ describe("Test DynamoDB Table", () => {
   it("should have encryption enabled", () => {
     expect(
       Testing.synthScope((scope) => {
-        new dynamodb.Table(scope, "table", tableConfig);
+        new dynamodb.Table(scope, "table");
       })
     ).toHaveResourceWithProperties(aws.dynamodb.DynamodbTable, {
       server_side_encryption: {
@@ -32,11 +25,15 @@ describe("Test DynamoDB Table", () => {
     });
   });
 
+  const stackConfig: StackConfig = {
+    region: "ap-southeast-2",
+  };
+
   it("should output valid Terraform", () => {
     const app = Testing.app();
     const stack = new Stack(app, "stack", stackConfig);
-    new dynamodb.Table(stack, "table", tableConfig);
-    new dynamodb.Table(stack, "table1", tableConfig);
+    new dynamodb.Table(stack, "table");
+    new dynamodb.Table(stack, "table1");
 
     expect(Testing.fullSynth(stack)).toBeValidTerraform();
   });
@@ -44,7 +41,7 @@ describe("Test DynamoDB Table", () => {
   // it("should plan successfully", () => {
   //   const app = Testing.app();
   //   const stack = new Stack(app, "stack", stackConfig);
-  //   new dynamodb.Table(stack, "table", tableConfig);
+  //   new dynamodb.Table(stack, "table");
 
   //   expect(Testing.fullSynth(stack)).toPlanSuccessfully();
   // });
