@@ -1,1 +1,1 @@
-export * as rand from "./rand";
+export * as rand from './rand';
